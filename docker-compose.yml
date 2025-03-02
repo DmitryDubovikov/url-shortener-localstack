@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_EXECUTOR=docker
+      - PERSISTENCE=1
+      - SERVICES=lambda,dynamodb,apigateway,logs
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./lambdas:/lambdas"
+      - "./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh"
+    command: >
+      sh -c "
+        apt-get update && 
+        apt-get install -y python3-pip unzip curl &&
+        pip3 install awscli &&
+        /usr/local/bin/docker-entrypoint.sh
+      "
