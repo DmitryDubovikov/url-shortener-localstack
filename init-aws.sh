@@ -132,5 +132,5 @@ aws --endpoint-url=http://localhost:4566 lambda add-permission \
     --source-arn "arn:aws:execute-api:us-east-1:000000000000:$API_ID/*/GET/*"
 
 echo "API Gateway URL: http://localhost:4566/restapis/$API_ID/prod/_user_request_/"
-echo "To create a short URL: curl -X POST http://localhost:4566/restapis/$API_ID/prod/_user_request_/url -d '{\"url\":\"https://example.com\"}'"
-echo "To access a short URL: curl -v http://localhost:4566/restapis/$API_ID/prod/_user_request_/YOUR_SHORT_CODE" 
+echo "To create a short URL: curl -X POST http://localhost:4566/restapis/$API_ID/prod/_user_request_/url -H 'Content-Type: application/json' -d '{\"url\":\"https://example.com\"}'"
+echo "To access a short URL: curl -v http://localhost:4566/restapis/$API_ID/prod/_user_request_/YOUR_SHORT_CODE"
